@@ -97,14 +97,11 @@ class DictionaryTagger(object):
 
 
 text = """What can I say about this place. The staff of the restaurant is nice and the eggplant is not bad. Apart from that, very uninspired food, lack of atmosphere and too expensive. I am a staunch vegetarian and was sorely dissapointed with the veggie options on the menu. Will be the last time I visit, I recommend others to avoid."""
-text2 = """
-Blunt, humorless, and baffling, it collides the brutish directorial stamp of its director (he of 300 and Watchmen fame) with the most shameless instincts of our latter-day superhero franchise bubble."""
-text3 = """
-While the Marvel universe, now owned by Disney, is glib and sunny, it's a nice echo of Warner's past as a home to gangsters and gritty melodramas to find its DC world operating very much on the dark end of the street"""
+
 splitter = Splitter()
 postagger = POSTagger()
 
-splitted_sentences = splitter.split(text3)
+splitted_sentences = splitter.split(text6)
 
 #print splitted_sentences
 
@@ -112,7 +109,7 @@ pos_tagged_sentences = postagger.pos_tag(splitted_sentences)
 
 #print pos_tagged_sentences
 
-dicttagger = DictionaryTagger([ 'dictionaries/positive.yml', 'dictionaries/negative.yml'])
+dicttagger = DictionaryTagger([ 'dictionaries/positive.yml', 'dictionaries/negative.yml', 'dictionaries/inc.yml', 'dictionaries/dec.yml', 'dictionaries/inv.yml'])
 dict_tagged_sentences = dicttagger.tag(pos_tagged_sentences)
 #print(dict_tagged_sentences)
 
@@ -121,8 +118,25 @@ def value_of(sentiment):
     if sentiment == 'negative': return -1
     return 0
 
-def sentiment_score(review):
-    return sum ([value_of(tag) for sentence in dict_tagged_sentences for token in sentence for tag in token[2]])
 
+def sentence_score(sentence_tokens, previous_token, acum_score):
+    if not sentence_tokens:
+        return acum_score
+    else:
+        current_token = sentence_tokens[0]
+        tags = current_token[2]
+        token_score = sum([value_of(tag) for tag in tags])
+        if previous_token is not None:
+            previous_tags = previous_token[2]
+            if 'inc' in previous_tags:
+                token_score *= 2.0
+            elif 'dec' in previous_tags:
+                token_score /= 2.0
+            elif 'inv' in previous_tags:
+                token_score *= -1.0
+        return sentence_score(sentence_tokens[1:], current_token, acum_score + token_score)
+
+def sentiment_score(review):
+    return sum([sentence_score(sentence, None, 0.0) for sentence in review])
 
 print sentiment_score(dict_tagged_sentences)
