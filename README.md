@@ -1,6 +1,6 @@
-# ${1:Rotten Sentimental Analysis}
+# Rotten Sentimental Analysis
 
-TODO: Projeto em desenvolvimento
+Projeto em desenvolvimento
 
 ## Prerequisits
 ```
