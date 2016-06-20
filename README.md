@@ -1,5 +1,3 @@
-<snippet>
-  <content><![CDATA[
 # ${1:Rotten Sentimental Analysis}
 
 TODO: Projeto em desenvolvimento
@@ -36,6 +34,3 @@ Heitor
 ## License
 
 No license yet!
-]]></content>
-  <tabTrigger>readme</tabTrigger>
-</snippet>
