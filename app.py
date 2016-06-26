@@ -8,11 +8,11 @@ def rotten_sentimental_analysis(review):
 
     pos_tagged_sentences = postagger.pos_tag(splitted_sentences)
 
-    dicttagger = DictionaryTagger([ 'dictionaries/positive.yml', 'dictionaries/negative.yml', 'dictionaries/inc.yml', 'dictionaries/dec.yml', 'dictionaries/inv.yml'])
+    dicttagger = DictionaryTagger(['dictionaries/positive.yml', 'dictionaries/negative.yml', 'dictionaries/inc.yml', 'dictionaries/dec.yml', 'dictionaries/inv.yml'])
 
     dict_tagged_sentences = dicttagger.tag(pos_tagged_sentences)
 
-    return sentiment_score(dict_tagged_sentences)
+    return 'rotten' if sentiment_score(dict_tagged_sentences) < 0 else 'fresh'
 
 def value_of(sentiment):
     if sentiment == 'positive': return 1
