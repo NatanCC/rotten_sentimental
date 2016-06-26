@@ -40,7 +40,9 @@ def sentence_score(sentence_tokens, previous_token, acum_score):
 def sentiment_score(review):
     return sum([sentence_score(sentence, None, 0.0) for sentence in review])
 
-input = open('input.txt', 'r')
-text = input.read().replace('\n', '')
-print rotten_sentimental_analysis(text)
-input.close()
+with open('input.txt', 'r') as input:
+    content = input.read().splitlines()
+
+reviews = map(rotten_sentimental_analysis, content)
+
+print reviews
