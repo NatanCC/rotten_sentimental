@@ -5,6 +5,7 @@ class Splitter(object):
     def __init__(self):
         self.nltk_splitter = nltk.data.load('tokenizers/punkt/english.pickle')
         self.nltk_tokenizer = nltk.tokenize.TreebankWordTokenizer()
+        self.stemmer = nltk.stem.snowball.SnowballStemmer("english", ignore_stopwords=True)
 
     def split(self, text):
         """
@@ -13,9 +14,9 @@ class Splitter(object):
             e.g.: [['this', 'is', 'a', 'sentence'], ['this', 'is', 'another', 'one']]
         """
         sentences = self.nltk_splitter.tokenize(text)
-        tokenized_sentences = [self.nltk_tokenizer.tokenize(sent) for sent in sentences]
-        return tokenized_sentences
 
+        tokenized_sentences = [[str(self.stemmer.stem(word)) for word in self.nltk_tokenizer.tokenize(sentence)] for sentence in sentences]
+        return tokenized_sentences
 
 class POSTagger(object):
     def __init__(self):
