@@ -1,10 +1,10 @@
-positivo
+neutro
 neutro
 positivo
-neutro
-positivo
-neutro
 positivo
 neutro
 neutro
+negativo
+negativo
+negativo
 negativo
