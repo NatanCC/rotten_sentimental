@@ -73,13 +73,23 @@ class ReviewSpider(scrapy.Spider):
                     break
        
                     
-        with open(self.output_file + "_reviews.txt", 'a') as f:                
+        with open("tests/reviews/" + self.output_file + "_reviews.txt", 'a') as f:                
             for i in range(len(reviews)):
                 f.write(str(reviews[i]) + "\n")
         
-        with open(self.output_file + "_ratings.txt", 'a') as f:                
+        with open("tests/reviews/" + self.output_file + "_ratings.txt", 'a') as f:                
             for i in range(len(ratings)):
                 f.write(str(ratings[i]) + "\n")
+        
+        with open("tests/reviews/" + self.output_file + "_class.txt", 'a') as f:                
+            for i in range(len(ratings)):
+                if (ratings[i] >= 4):
+                    f.write("positivo" + "\n")
+                elif (ratings[i] <= 2):
+                    f.write("negativo" + "\n")
+                else:
+                    f.write("neutro" + "\n")
+                
                       
         self.crawler.stop()
       
@@ -90,12 +100,19 @@ def get_reviews(urls):
         process.crawl(ReviewSpider, url, False, url[33:])
 
     process.start()
+    
+def get_reviews_users(urls):
+    for url in urls:
+        process = CrawlerProcess()
+        process.crawl(ReviewSpider, url, True, url[33:])
+
+    process.start()
 
 
 #Tests
-#urls = ["https://www.rottentomatoes.com/m/finding_dory", "https://www.rottentomatoes.com/m/captain_america_civil_war"]
-urls = ["https://www.rottentomatoes.com/m/captain_america_civil_war"]
-get_reviews(urls)
+urls = ["https://www.rottentomatoes.com/m/x_men_apocalypse", "https://www.rottentomatoes.com/m/captain_america_civil_war", "https://www.rottentomatoes.com/m/teenage_mutant_ninja_turtles_out_of_the_shadows", "https://www.rottentomatoes.com/m/warcraft", "https://www.rottentomatoes.com/m/batman_v_superman_dawn_of_justice"]
+
+get_reviews_users(urls)
 
 
 

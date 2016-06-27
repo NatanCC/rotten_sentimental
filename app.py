@@ -47,8 +47,4 @@ def analyze_file(file_name):
 
         reviews = map(rotten_sentimental_analysis, content)
         return reviews
-        
-
-
-print analyze_file('input.txt')
 
