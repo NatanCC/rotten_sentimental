@@ -12,7 +12,12 @@ def rotten_sentimental_analysis(review):
 
     dict_tagged_sentences = dicttagger.tag(pos_tagged_sentences)
 
-    return 'rotten' if sentiment_score(dict_tagged_sentences) < 0 else 'fresh'
+    if sentiment_score(dict_tagged_sentences) <= -1:
+        return "negativo"
+    elif sentiment_score(dict_tagged_sentences) >= 1:
+        return "positivo"
+    else:
+        return "neutro"
 
 def value_of(sentiment):
     if sentiment == 'positive': return 1
