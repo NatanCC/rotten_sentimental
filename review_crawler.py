@@ -73,13 +73,13 @@ class ReviewSpider(scrapy.Spider):
                     break
        
                     
-        with open("tests/reviews/" + self.output_file + "_reviews.txt", 'a') as f:                
+        '''with open("tests/reviews/" + self.output_file + "_reviews.txt", 'a') as f:                
             for i in range(len(reviews)):
                 f.write(str(reviews[i]) + "\n")
         
         with open("tests/reviews/" + self.output_file + "_ratings.txt", 'a') as f:                
             for i in range(len(ratings)):
-                f.write(str(ratings[i]) + "\n")
+                f.write(str(ratings[i]) + "\n")'''
         
         with open("tests/reviews/" + self.output_file + "_class.txt", 'a') as f:                
             for i in range(len(ratings)):
