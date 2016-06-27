@@ -11,8 +11,8 @@ def rotten_sentimental_analysis(review):
     dicttagger = DictionaryTagger(['dictionaries/positive.yml', 'dictionaries/negative.yml', 'dictionaries/inc.yml', 'dictionaries/dec.yml', 'dictionaries/inv.yml'])
 
     dict_tagged_sentences = dicttagger.tag(pos_tagged_sentences)
-
-    if sentiment_score(dict_tagged_sentences) <= -1:
+      
+    if sentiment_score(dict_tagged_sentences) < -1:
         return "negativo"
     elif sentiment_score(dict_tagged_sentences) >= 1:
         return "positivo"

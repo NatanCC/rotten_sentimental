@@ -1,7 +1,7 @@
 from app import analyze_file
 
 results = []
-#results = analyze_file("tests/test_input.txt")
+results = analyze_file("tests/test_input.txt")
 #results = ["positivo"] * 10
 
 if results:
@@ -16,10 +16,8 @@ with open("tests/test_results.txt", 'r') as input:
         results = input.read().splitlines()
     
 
-   
-   
-#TODO
-#Comparar e fazer matriz de confusao     
+
+print
 print results
 print classified
 
@@ -58,7 +56,7 @@ def confusion_matrix(results, classified):
                 neg_neu += 1
             else:
                 neg_neg += 1
-                
+            
     print str(pos_pos) + " " + str(pos_neu) + " " + str(pos_neg)  
     print str(neu_pos) + " " + str(neu_neu) + " " + str(neu_neg) 
     print str(neg_pos) + " " + str(neg_neu) + " " + str(neg_neg)
