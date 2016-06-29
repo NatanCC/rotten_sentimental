@@ -2,24 +2,17 @@ from app import analyze_file
 
 results = []
 results = analyze_file("tests/test_input.txt")
-#results = ["positivo"] * 10
 
-if results:
-    with open("tests/test_results.txt", 'w') as f:
-        for result in results:
-            f.write(result + "\n")
 
 with open("tests/test_classified.txt", 'r') as input:
         classified = input.read().splitlines()
-        
-with open("tests/test_results.txt", 'r') as input:
-        results = input.read().splitlines()
+
     
 
 
-print
 print results
 print classified
+print
 
 def confusion_matrix(results, classified):
     pos_pos = 0
