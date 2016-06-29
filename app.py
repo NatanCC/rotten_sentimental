@@ -44,15 +44,14 @@ class Analyzer(object):
         return sum([self.sentence_score(sentence, None, 0.0) for sentence in review])
     
 
-
-def analyze_file(file_name):
-    analyzer = Analyzer()
+    def analyze_file(self, file_name):
+        with open(file_name, 'r') as input:
+            content = input.read().splitlines()
     
-    with open(file_name, 'r') as input:
-        content = input.read().splitlines()
-
-        reviews = map(analyzer.rotten_sentimental_analysis, content)
-        return reviews
+            reviews = map(self.rotten_sentimental_analysis, content)
+            return reviews
+        
+    
     
 
 

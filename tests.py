@@ -1,7 +1,9 @@
-from app import analyze_file
+from app import Analyzer
+
+analyzer = Analyzer()
 
 results = []
-results = analyze_file("tests/test_input.txt")
+results = analyzer.analyze_file("tests/test_input.txt")
 
 
 with open("tests/test_classified.txt", 'r') as input:
