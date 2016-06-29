@@ -1,4 +1,7 @@
 from rotten_sentimental import Splitter, POSTagger, DictionaryTagger
+import sys
+from PyQt4 import QtCore, QtGui
+from gui import *
 
 class Analyzer(object):
     def __init__(self):
@@ -52,6 +55,65 @@ class Analyzer(object):
             return reviews
         
     
+class AppGUI(QtGui.QTabWidget):
+    def __init__(self, parent=None):
+        self.analyzer = Analyzer()
+        self.review = ""
+        self.reviews = []
+        
+        QtGui.QWidget.__init__(self, parent)
+        self.ui = Ui_main()
+        self.ui.setupUi(self)
+        
+        QtCore.QObject.connect(self.ui.button_analyze,QtCore.SIGNAL("clicked()"), self.normal_analysis)
+        QtCore.QObject.connect(self.ui.button_file_analyze,QtCore.SIGNAL("clicked()"), self.file_analysis)
+        QtCore.QObject.connect(self.ui.button_open,QtCore.SIGNAL("clicked()"), self.show_file)
+        
+        
+    def show_file(self):
+        self.ui.file_text.setText("")
+        fd = QtGui.QFileDialog(self)
+        self.filename = fd.getOpenFileName()
+        from os.path import isfile
+        if isfile(self.filename):
+            count = 1
+            for line in open(self.filename).read().splitlines():
+                self.ui.file_text.append(str(count) + " - " + line)
+                count += 1
+                                         
+            
+    def file_save(self):
+        from os.path import isfile
+        if isfile(self.filename):
+            file = open(self.filename, 'w')
+            file.write(self.ui.editor_window.toPlainText())
+            file.close()
     
+    def normal_analysis(self):
+        result = "positivo"
+        self.ui.result_text.setText(result.capitalize())
+    
+    
+    def file_analysis(self):
+        results = ["positivo", "neutro", "negativo"]
+        
+        self.ui.results_text.setText("")
+        
+        count = 1
+        for result in results:
+            self.ui.results_text.append(str(count) + "- " + result.capitalize())
+            count += 1
+        
+
+
+def main():
+    app = QtGui.QApplication(sys.argv)
+    myapp = AppGUI()
+    myapp.show()
+    sys.exit(app.exec_())
+
+
+if __name__ == "__main__":
+    main()    
 
 
