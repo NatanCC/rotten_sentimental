@@ -14,6 +14,7 @@ class Analyzer(object):
         pos_tagged_sentences = self.postagger.pos_tag(splitted_sentences)
         dict_tagged_sentences = self.dicttagger.tag(pos_tagged_sentences)
         
+        
         if self.sentiment_score(dict_tagged_sentences) < -1:
             return "negativo"
         elif self.sentiment_score(dict_tagged_sentences) >= 1:
@@ -48,18 +49,21 @@ class Analyzer(object):
     
 
     def analyze_file(self, file_name):
-        with open(file_name, 'r') as input:
-            content = input.read().splitlines()
-    
-            reviews = map(self.rotten_sentimental_analysis, content)
-            return reviews
+        from os.path import isfile
+        if isfile(file_name):
+            with open(file_name, 'r') as input:
+                content = input.read().splitlines()
+        
+                reviews = map(self.rotten_sentimental_analysis, content)
+                return reviews
+        else:
+            print "File not found"
         
     
 class AppGUI(QtGui.QTabWidget):
     def __init__(self, parent=None):
         self.analyzer = Analyzer()
-        self.review = ""
-        self.reviews = []
+        self.filename = ""
         
         QtGui.QWidget.__init__(self, parent)
         self.ui = Ui_main()
@@ -67,17 +71,19 @@ class AppGUI(QtGui.QTabWidget):
         
         QtCore.QObject.connect(self.ui.button_analyze,QtCore.SIGNAL("clicked()"), self.normal_analysis)
         QtCore.QObject.connect(self.ui.button_file_analyze,QtCore.SIGNAL("clicked()"), self.file_analysis)
-        QtCore.QObject.connect(self.ui.button_open,QtCore.SIGNAL("clicked()"), self.show_file)
+        QtCore.QObject.connect(self.ui.button_open,QtCore.SIGNAL("clicked()"), self.open_file)
         
         
-    def show_file(self):
+    def open_file(self):
         self.ui.file_text.setText("")
         fd = QtGui.QFileDialog(self)
         self.filename = fd.getOpenFileName()
         from os.path import isfile
         if isfile(self.filename):
             count = 1
+            self.reviews = []
             for line in open(self.filename).read().splitlines():
+                self.reviews.append(line)
                 self.ui.file_text.append(str(count) + " - " + line)
                 count += 1
                                          
@@ -90,19 +96,24 @@ class AppGUI(QtGui.QTabWidget):
             file.close()
     
     def normal_analysis(self):
-        result = "positivo"
+        result = self.analyzer.rotten_sentimental_analysis(str(self.ui.input_text.toPlainText()))
         self.ui.result_text.setText(result.capitalize())
     
     
     def file_analysis(self):
-        results = ["positivo", "neutro", "negativo"]
+        print "Analyzing.."
+                
+        results = self.analyzer.analyze_file(self.filename)
+        
+        print "Finished"
         
         self.ui.results_text.setText("")
         
         count = 1
-        for result in results:
-            self.ui.results_text.append(str(count) + "- " + result.capitalize())
-            count += 1
+        if results is not None:
+            for result in results:
+                self.ui.results_text.append(str(count) + "- " + result.capitalize())
+                count += 1
         
 
 
