@@ -19,8 +19,8 @@ class Analyzer(object):
             return "neutro"
     
     def value_of(self, sentiment):
-        if sentiment == 'positive': return 1
-        if sentiment == 'negative': return -1
+        if sentiment == 'positive': return 1.5
+        if sentiment == 'negative': return -1.5
         return 0
     
     def sentence_score(self, sentence_tokens, previous_token, acum_score):
@@ -37,7 +37,7 @@ class Analyzer(object):
                 elif 'dec' in previous_tags:
                     token_score /= 2.0
                 elif 'inv' in previous_tags:
-                    token_score *= -1.0
+                    token_score *= -5.0
             return self.sentence_score(sentence_tokens[1:], current_token, acum_score + token_score)
         
     def sentiment_score(self, review):

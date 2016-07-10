@@ -6,7 +6,7 @@ results = []
 results = analyzer.analyze_file("tests/test_input.txt")
 
 
-with open("tests/test_classified.txt", 'r') as input:
+with open("tests/test_classes.txt", 'r') as input:
         classified = input.read().splitlines()
 
     
